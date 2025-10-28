@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
+const crypto = require('crypto');
 require('dotenv').config();
 
 const app = express();
@@ -35,6 +36,11 @@ app.use(limiter);
 // Middleware
 app.use(cors());
 app.use(compression());
+
+// Raw body parser for webhook signature verification
+app.use('/api/webhooks', express.raw({ type: 'application/json' }));
+
+// Regular JSON parser for other routes
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -49,6 +55,11 @@ app.get('/api/health', (req, res) => {
     uptime: process.uptime(),
     environment: process.env.NODE_ENV || 'development'
   });
+});
+
+// Render health check endpoint
+app.get('/healthz', (req, res) => {
+  res.json({ ok: true });
 });
 
 // Serve main pages
@@ -89,6 +100,77 @@ app.get('/api/status', (req, res) => {
   });
 });
 
+// Webhook signature verification middleware
+const verifyWebhookSignature = (req, res, next) => {
+  const signature = req.headers['x-signature'] || req.headers['x-hub-signature-256'] || req.headers['x-webhook-signature'];
+  const webhookSecret = process.env.WEBHOOK_SIGNING_SECRET;
+  
+  if (!signature || !webhookSecret) {
+    console.log('Webhook verification failed: Missing signature or secret');
+    return res.status(400).json({ error: 'Missing signature or secret' });
+  }
+  
+  try {
+    const payload = req.body;
+    const expectedSignature = crypto
+      .createHmac('sha256', webhookSecret)
+      .update(payload)
+      .digest('hex');
+    
+    // Handle different signature formats
+    const providedSignature = signature.startsWith('sha256=') 
+      ? signature.substring(7) 
+      : signature;
+    
+    const isValid = crypto.timingSafeEqual(
+      Buffer.from(expectedSignature, 'hex'),
+      Buffer.from(providedSignature, 'hex')
+    );
+    
+    if (isValid) {
+      console.log('Webhook signature verified: true');
+      req.webhookVerified = true;
+      next();
+    } else {
+      console.log('Webhook signature verification failed: Invalid signature');
+      return res.status(400).json({ error: 'Invalid signature' });
+    }
+  } catch (error) {
+    console.error('Webhook verification error:', error.message);
+    return res.status(400).json({ error: 'Signature verification failed' });
+  }
+};
+
+// Webhook endpoint
+app.post('/api/webhooks/meauxbilityorg', verifyWebhookSignature, (req, res) => {
+  try {
+    const payload = JSON.parse(req.body.toString());
+    
+    console.log('Webhook received:', {
+      verified: req.webhookVerified,
+      timestamp: new Date().toISOString(),
+      payloadType: payload.type || 'unknown',
+      eventId: payload.id || 'no-id'
+    });
+    
+    // Process webhook payload here
+    // Add your webhook processing logic
+    
+    res.status(200).json({ 
+      success: true, 
+      message: 'Webhook processed successfully',
+      verified: true,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Webhook processing error:', error.message);
+    res.status(500).json({ 
+      error: 'Webhook processing failed',
+      message: error.message 
+    });
+  }
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -111,6 +193,9 @@ app.listen(PORT, () => {
   console.log(`🚀 Meauxbility server running on port ${PORT}`);
   console.log(`📱 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🌐 Health check: http://localhost:${PORT}/api/health`);
+  console.log(`🔗 Render health check: http://localhost:${PORT}/healthz`);
+  console.log(`🎣 Webhook endpoint: http://localhost:${PORT}/api/webhooks/meauxbilityorg`);
+  console.log(`🔐 Webhook secret configured: ${process.env.WEBHOOK_SIGNING_SECRET ? 'Yes' : 'No'}`);
 });
 
 module.exports = app;
