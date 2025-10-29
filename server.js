@@ -91,6 +91,10 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'admin', 'index.html'));
 });
 
+app.get('/assets', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'assets.html'));
+});
+
 // API routes
 app.get('/api/status', (req, res) => {
   res.json({
