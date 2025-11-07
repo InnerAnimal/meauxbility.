@@ -25,14 +25,14 @@ export async function POST(request: NextRequest) {
 
         // Save donation to database
         const supabase = await createServiceClient()
-        await supabase.from('donations').insert([
+        await supabase.from('meauxbility_donations').insert([
           {
             stripe_session_id: session.id,
             amount: (session.amount_total || 0) / 100,
             donor_email: session.customer_email,
             donor_name: session.metadata?.donorName || 'Anonymous',
             status: 'completed',
-            created_at: new Date().toISOString(),
+            currency: 'usd',
           },
         ])
 
