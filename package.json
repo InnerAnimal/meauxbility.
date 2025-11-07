@@ -23,6 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "@supabase/supabase-js": "^2.80.0",
+    "ai": "^5.0.89",
     "next": "^14.2.33",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
