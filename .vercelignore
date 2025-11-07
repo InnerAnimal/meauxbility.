@@ -1,0 +1,15 @@
+# Old HTML files (not needed for Next.js deployment)
+*.html
+/assets
+/admin/*.html
+/public/*.html
+server.js
+
+# Documentation
+README.md
+CURSOR_GUIDE.md
+DEPLOY_INSTRUCTIONS.md
+
+# Development
+.git
+.gitignore
