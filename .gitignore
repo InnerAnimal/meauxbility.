@@ -63,3 +63,4 @@ Thumbs.db
 # Secrets and API keys
 secrets.json
 config.local.js
+.next

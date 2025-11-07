@@ -1,0 +1,131 @@
+/* Navigation - Glassmorphic with Brand Tokens */
+.navGlass {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--mbx-border);
+  box-shadow: var(--mbx-shadow-md);
+}
+
+.navContainer {
+  max-width: var(--mbx-max);
+  margin: 0 auto;
+  padding: var(--mbx-space-sm) var(--mbx-space-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: var(--mbx-ink);
+  text-decoration: none;
+  transition: color 0.2s var(--mbx-ease);
+}
+
+.logo:hover {
+  color: var(--mbx-orange);
+}
+
+.navMenu {
+  display: none;
+  list-style: none;
+  gap: var(--mbx-space-md);
+  align-items: center;
+}
+
+.navMenu a {
+  color: var(--mbx-text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s var(--mbx-ease);
+  padding: 0.5rem 1rem;
+  border-radius: var(--mbx-radius-md);
+}
+
+.navMenu a:hover {
+  color: var(--mbx-teal);
+  background: var(--mbx-surface-alt);
+}
+
+.impactBtn {
+  background: var(--mbx-orange) !important;
+  color: var(--mbx-white) !important;
+  padding: 0.5rem 1.5rem !important;
+  border-radius: var(--mbx-radius-2xl) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.25);
+}
+
+.impactBtn:hover {
+  background: var(--mbx-orange-ink) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 107, 0, 0.35);
+}
+
+/* Mobile Toggle */
+.mobileToggle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--mbx-space-xs);
+}
+
+.mobileToggle span {
+  width: 24px;
+  height: 2px;
+  background: var(--mbx-ink);
+  transition: all 0.2s var(--mbx-ease);
+}
+
+/* Tablet and Desktop */
+@media (min-width: 768px) {
+  .navMenu {
+    display: flex;
+  }
+
+  .mobileToggle {
+    display: none;
+  }
+}
+
+/* Mobile Menu Open State */
+@media (max-width: 767px) {
+  .navMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--mbx-border);
+    flex-direction: column;
+    padding: var(--mbx-space-md);
+    box-shadow: var(--mbx-shadow-lg);
+  }
+
+  .navMenuOpen {
+    display: flex;
+  }
+
+  .navMenu li {
+    width: 100%;
+  }
+
+  .navMenu a {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+}
