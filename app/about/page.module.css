@@ -1,0 +1,170 @@
+/* About Page - Dark Theme */
+.aboutHero {
+  padding: calc(80px + var(--mbx-space-2xl)) var(--mbx-space-md) var(--mbx-space-2xl);
+  text-align: center;
+  background: linear-gradient(180deg, #0B1F24 0%, #0A4F4F 100%);
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin-bottom: var(--mbx-space-md);
+  color: var(--mbx-white);
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.storySection {
+  padding: var(--mbx-space-2xl) var(--mbx-space-md);
+  background: #0B1F24;
+}
+
+.storyGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--mbx-space-xl);
+  align-items: center;
+}
+
+.storyContent h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: var(--mbx-space-md);
+  color: var(--mbx-white);
+}
+
+.storyContent p {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: var(--mbx-space-md);
+}
+
+.storyImage {
+  display: flex;
+  justify-content: center;
+}
+
+.imagePlaceholder {
+  width: 100%;
+  max-width: 500px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--mbx-radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+@media (min-width: 1024px) {
+  .storyGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.valuesSection {
+  padding: var(--mbx-space-2xl) var(--mbx-space-md);
+  background: #0A4F4F;
+  text-align: center;
+}
+
+.valuesSection h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: var(--mbx-space-xl);
+  color: var(--mbx-white);
+}
+
+.valuesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--mbx-space-md);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.valueCard {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--mbx-radius-lg);
+  padding: var(--mbx-space-lg);
+  transition: transform 0.3s var(--mbx-ease), background 0.3s var(--mbx-ease);
+}
+
+.valueCard:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.valueIcon {
+  font-size: 3rem;
+  margin-bottom: var(--mbx-space-sm);
+}
+
+.valueCard h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--mbx-space-xs);
+  color: var(--mbx-white);
+}
+
+.valueCard p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+}
+
+@media (min-width: 640px) {
+  .valuesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .valuesGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.impactSection {
+  padding: var(--mbx-space-2xl) var(--mbx-space-md);
+  background: #0B1F24;
+  text-align: center;
+}
+
+.impactSection h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: var(--mbx-space-md);
+  color: var(--mbx-white);
+}
+
+.impactText {
+  max-width: 800px;
+  margin: 0 auto var(--mbx-space-xl);
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.ctaButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mbx-space-sm);
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .ctaButtons {
+    flex-direction: row;
+  }
+}
