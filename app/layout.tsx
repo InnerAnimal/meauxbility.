@@ -3,6 +3,7 @@ import '../styles/globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ThemeProvider from '@/components/ThemeProvider'
+import ChatBot from '@/components/ChatBot'
 
 export const metadata: Metadata = {
   title: 'Meauxbility | Transform Your Pain into Purpose',
@@ -49,6 +50,7 @@ export default function RootLayout({
           <Header />
           <main id="main">{children}</main>
           <Footer />
+          <ChatBot />
         </ThemeProvider>
       </body>
     </html>

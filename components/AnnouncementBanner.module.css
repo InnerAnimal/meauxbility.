@@ -1,0 +1,46 @@
+.banner {
+  background: linear-gradient(90deg, var(--teal) 0%, var(--purple) 50%, var(--orange) 100%);
+  color: white;
+  padding: 12px 0;
+  overflow: hidden;
+  position: relative;
+  margin-top: var(--nav-h);
+  z-index: 100;
+}
+
+.scrollWrapper {
+  display: flex;
+  width: 100%;
+}
+
+.scrollContent {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  white-space: nowrap;
+  animation: scroll 30s linear infinite;
+  flex-shrink: 0;
+}
+
+.scrollItem {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0 20px;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (max-width: 768px) {
+  .scrollItem {
+    font-size: 14px;
+  }
+}
