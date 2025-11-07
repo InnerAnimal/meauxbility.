@@ -3,6 +3,7 @@ import '../styles/globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ChatWidget from '@/components/ChatWidget'
+import { AuthProvider } from '@/contexts/AuthContext'
 
 export const metadata: Metadata = {
   title: 'Meauxbility | Transform Your Pain into Purpose',
@@ -39,10 +40,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <ChatWidget />
+        <AuthProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <ChatWidget />
+        </AuthProvider>
       </body>
     </html>
   )
