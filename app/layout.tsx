@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import '../styles/globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import ChatWidget from '@/components/ChatWidget'
 
 export const metadata: Metadata = {
   title: 'Meauxbility | Transform Your Pain into Purpose',
@@ -41,6 +42,7 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        <ChatWidget />
       </body>
     </html>
   )
