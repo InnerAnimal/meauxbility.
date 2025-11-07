@@ -29,6 +29,12 @@ dist/
 build/
 .cache/
 
+# Next.js
+.next/
+out/
+next-env.d.ts
+.vercel
+
 # Logs
 logs
 *.log
