@@ -1,16 +1,19 @@
-# Meauxbility.org - Static Site Repository
+# Meauxbility.org - Next.js 14 App Router
 
-**This will hopefully be our last time setting up Meauxbility.org**  
-Tech Stack: Render, Stripe, Supabase, Cursor, Claude, OpenAI
+**Transform Your Pain into Purpose**
+
+A production Next.js application for Meauxbility, a 501(c)(3) nonprofit providing mobility grants and accessibility services to spinal cord injury survivors across Louisiana's Acadiana region.
 
 ---
 
 ## 🎯 Project Overview
 
-Meauxbility is a 501(c)(3) nonprofit organization (EIN: 33-4214907) providing mobility grants and accessibility services to spinal cord injury survivors across Louisiana's Acadiana region.
-
-**Launch Target:** November 3, 2024  
-**Current Phase:** Static GitHub Pages → Supabase/Render Migration
+- **Organization:** Meauxbility (EIN: 33-4214907)
+- **Framework:** Next.js 14 App Router with TypeScript
+- **Design:** Clay.Global-inspired cinematic minimalism
+- **Hosting:** Vercel
+- **Domain:** https://www.meauxbility.org
+- **Vercel Project ID:** prj_tLe5xpmnA0hbDNRytqCbWq8R2Gul
 
 ---
 
@@ -18,269 +21,405 @@ Meauxbility is a 501(c)(3) nonprofit organization (EIN: 33-4214907) providing mo
 
 ```
 meauxbility.org/
-├── index.html              # Homepage with TRUTEC Stack
-├── about.html              # Mission/Team (glassmorphic)
-├── apply.html              # Grant Application Form
-├── donate.html             # Donation page (Stripe integration)
-├── stories.html            # Success Stories
-├── contact.html            # Contact form
-├── admin/
-│   └── index.html          # Admin Dashboard (corporate style)
-├── assets/
-│   ├── css/
-│   │   ├── main.css        # Shared styles & CSS variables
-│   │   ├── glassmorphic.css # Sam's signature glass UI
-│   │   └── admin.css       # Admin dashboard styles
-│   ├── js/
-│   │   ├── main.js         # Core utilities
-│   │   ├── forms.js        # Form handling & validation
-│   │   └── admin.js        # Admin dashboard logic
-│   └── images/
-│       └── logo.svg
-├── .github/
-│   └── workflows/
-│       └── deploy.yml      # Auto-deploy to GitHub Pages
-├── README.md               # This file
-└── CURSOR_GUIDE.md         # Quick AI assistant guide
+├── app/                          # Next.js 14 App Router
+│   ├── layout.tsx               # Root layout with Header/Footer
+│   ├── page.tsx                 # Home page (light theme)
+│   ├── about/
+│   │   └── page.tsx            # About page (dark theme)
+│   ├── programs/
+│   │   └── page.tsx            # Programs page (light)
+│   ├── community/
+│   │   └── page.tsx            # Community page (dark)
+│   ├── resources/
+│   │   └── page.tsx            # Resources page (dark)
+│   ├── connect/
+│   │   └── page.tsx            # Contact page (light)
+│   ├── impact/
+│   │   └── page.tsx            # Donate page (light)
+│   └── api/
+│       ├── donations/
+│       │   └── route.ts        # Stripe PaymentIntent endpoint
+│       ├── forms/
+│       │   └── contact/
+│       │       └── route.ts    # Resend email endpoint
+│       ├── subscribe/
+│       │   └── route.ts        # Newsletter subscription
+│       └── upload/
+│           └── route.ts        # Supabase file upload
+├── components/
+│   ├── Header.tsx               # Main navigation
+│   ├── Header.module.css
+│   ├── Footer.tsx               # Site footer
+│   └── Footer.module.css
+├── styles/
+│   ├── mbx-tokens.css          # Brand design tokens
+│   └── globals.css             # Global styles & resets
+├── public/                      # Static assets
+├── next.config.js              # Next.js configuration
+├── tsconfig.json               # TypeScript configuration
+├── package.json                # Dependencies & scripts
+└── repo.json                   # Repository metadata
 ```
 
 ---
 
-## 🎨 Design System
+## 🎨 Brand Tokens
 
-### Brand Colors
+All brand colors and design tokens are defined in `styles/mbx-tokens.css`:
+
+### Core Colors
 ```css
---brand-primary: #2563eb    /* Primary Blue */
---brand-secondary: #4f46e5  /* Indigo */
---brand-accent: #0ea5e9     /* Cyan */
---brand-dark: #111827       /* Dark Gray */
+--mbx-orange: #FF6B00          /* Primary action color */
+--mbx-orange-ink: #E85D00      /* Darker orange */
+--mbx-teal: #339999            /* Secondary brand color */
+--mbx-teal-ink: #0A4F4F        /* Dark teal */
+--mbx-teal-mid: #2C8B8B        /* Mid teal */
+--mbx-highlight: #00CFFF       /* Accent/focus color */
+--mbx-ink: #0B1F24             /* Primary text */
+--mbx-bg: #f8fdf9              /* Light background */
 ```
 
-### Glassmorphic Style (Public Pages)
-- Background: Radial gradients with purple/blue tones
-- Cards: `backdrop-filter: blur(12px)` with white borders
-- Mobile-first, <50KB per page
-- Smooth animations with reduced motion support
+### Design System
+- Typography: Inter (400-900)
+- Border Radius: Semi-glow buttons with 2xl radius
+- Motion: Cubic bezier easing
+- Max Width: 1440px
+- Spacing: 8px base unit system
 
-### Admin Style (Dashboard)
-- Clean corporate SaaS interface
-- White cards, blue accents
-- Stats grid, modals, toasts
-- GitHub API integration
+---
+
+## 🗺️ Page Routes
+
+### Public Routes
+- `/` - Home (light theme)
+- `/about` - About Meauxbility (dark theme)
+- `/programs` - Grant programs & eligibility (light)
+- `/community` - Community stories & events (dark)
+- `/resources` - Helpful resources & guides (dark)
+- `/connect` - Contact form (light)
+- `/impact` - Donation page (light)
+
+### Legacy Redirects (SEO preservation)
+- `/about.html` → `/about` (301)
+- `/apply.html` → `/programs` (301)
+- `/donate.html` → `/impact` (301)
+- `/contact.html` → `/connect` (301)
+- `/index.html` → `/` (301)
+- `/stories.html` → `/community` (301)
+
+All redirects are permanent (301) and configured in `next.config.js`.
+
+---
+
+## 🔌 API Endpoints
+
+### POST `/api/donations`
+Creates Stripe PaymentIntent for donations.
+```typescript
+// Request
+{ amount: 5000, currency: 'usd', metadata: {} }
+
+// Response
+{ clientSecret: 'pi_...', paymentIntentId: 'pi_...' }
+```
+
+### POST `/api/forms/contact`
+Sends contact form emails via Resend.
+```typescript
+// Request
+{ name, email, phone, subject, message }
+
+// Response
+{ success: true, message: 'Message sent successfully' }
+```
+
+### POST `/api/subscribe`
+Subscribes email to newsletter via Supabase.
+```typescript
+// Request
+{ email: 'user@example.com' }
+
+// Response
+{ success: true, message: 'Successfully subscribed' }
+```
+
+### POST `/api/upload`
+Uploads files to Supabase Storage.
+```typescript
+// Request: multipart/form-data with 'file' field
+
+// Response
+{ success: true, url: 'https://...', fileName: '...' }
+```
+
+---
+
+## 🔐 Environment Variables
+
+Required environment variables for deployment:
+
+```env
+# Stripe Integration
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# Supabase Integration
+NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+SUPABASE_SERVICE_ROLE_KEY=eyJ...
+
+# Resend Email Service
+RESEND_API_KEY=re_...
+ADMIN_EMAIL=info@meauxbility.org
+
+# Site Configuration
+NEXT_PUBLIC_SITE_URL=https://www.meauxbility.org
+```
+
+**Security Notes:**
+- Never commit `.env` files to version control
+- Use Vercel's environment variable dashboard for production
+- Service role keys should only be used in API routes (server-side)
 
 ---
 
 ## 🚀 Quick Start
 
-### Local Development
+### Prerequisites
+- Node.js 18.0+
+- npm 9.0+
+
+### Installation
+
 ```bash
 # Clone repository
-git clone https://github.com/[username]/meauxbility.org.git
+git clone https://github.com/InnerAnimal/meauxbility.org.git
 cd meauxbility.org
 
-# Open in browser
-open index.html
+# Install dependencies
+npm install
 
-# Or use a local server
-python -m http.server 8000
-# Visit http://localhost:8000
+# Create .env.local file
+cp .env.example .env.local
+# Add your environment variables
+
+# Run development server
+npm run dev
 ```
 
-### GitHub Pages Deployment
-1. Push to `main` branch
-2. GitHub Actions automatically deploys
-3. Site available at: `https://[username].github.io/meauxbility.org`
-4. Configure custom domain: `meauxbility.org`
+Visit http://localhost:3000 to view the site.
+
+### Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm start            # Start production server
+npm run lint         # Run ESLint
+npm run type-check   # Run TypeScript compiler check
+```
+
+---
+
+## 🌐 Deployment
+
+### Vercel Deployment
+
+1. **Link to existing Vercel project:**
+   ```bash
+   vercel link --project prj_tLe5xpmnA0hbDNRytqCbWq8R2Gul
+   ```
+
+2. **Set environment variables in Vercel dashboard:**
+   - Go to Project Settings → Environment Variables
+   - Add all required environment variables
+   - Set for Production, Preview, and Development
+
+3. **Deploy:**
+   ```bash
+   # Deploy to production
+   vercel deploy --prod
+
+   # Or push to main branch for automatic deployment
+   git push origin main
+   ```
+
+### Build & Deploy Commands
+
+```bash
+# Vercel will automatically run:
+npm run build    # Builds the Next.js application
+npm start        # Starts the production server
+```
+
+---
+
+## ✅ Acceptance Checklist
+
+- ✅ Home `/` renders light theme; header/footer match brand
+- ✅ All nav routes exist and load without .html extensions
+- ✅ Legacy .html paths 301 redirect to clean routes
+- ✅ Stripe donation integration configured
+- ✅ Contact form sends emails via Resend
+- ✅ Newsletter subscription stores to Supabase
+- ✅ File upload works with Supabase Storage
+- ✅ repo.json updated with project metadata
+- ✅ README.md documents all features and setup
+- ✅ TypeScript strict mode enabled
+- ✅ Responsive design (mobile-first)
+- ✅ Accessibility features (WCAG 2.1 AA)
+- ✅ Reduced motion support
+
+### Performance Targets
+- Lighthouse Performance: ≥ 90
+- Lighthouse Accessibility: ≥ 95
+- Lighthouse SEO: ≥ 95
+- First Contentful Paint: < 1.5s
+- Time to Interactive: < 3.5s
+
+---
+
+## 🎨 Theme System
+
+Pages are automatically themed based on route:
+
+### Light Theme Pages
+- Home (`/`)
+- Programs (`/programs`)
+- Connect (`/connect`)
+- Impact (`/impact`)
+
+### Dark Theme Pages
+- About (`/about`)
+- Community (`/community`)
+- Resources (`/resources`)
+
+Dark theme is applied by adding `theme-dark` class to the page wrapper, which updates CSS variables for dark backgrounds and light text.
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Current (Static)
-- **HTML5** - Semantic markup
-- **CSS3** - Glassmorphic design system
-- **Vanilla JS** - No frameworks, performance-first
-- **GitHub Pages** - Free hosting
+### Frontend
+- **Next.js 14** - App Router with Server Components
+- **React 18** - UI framework
+- **TypeScript** - Type safety
+- **CSS Modules** - Scoped component styles
+- **CSS Variables** - Brand token system
 
-### Future (Post-Migration)
-- **Supabase** - PostgreSQL database, auth, storage
-- **Render** - Server hosting
-- **Stripe** - Payment processing
-- **GitHub** - Version control
-- **Google Workspace** - Email, Drive, Calendar
+### Backend & Services
+- **Stripe** - Payment processing for donations
+- **Supabase** - Database, authentication, and file storage
+- **Resend** - Transactional email service
+- **Vercel** - Hosting and deployment
+
+### Development Tools
+- **ESLint** - Code linting
+- **TypeScript Compiler** - Type checking
+- **Git** - Version control
 
 ---
 
-## 📄 Page Templates
+## 📱 Responsive Design
 
-### Public Pages (Glassmorphic)
-All public pages follow this structure:
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Title | Meauxbility</title>
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/glassmorphic.css">
-</head>
-<body>
-    <nav class="nav-glass">...</nav>
-    <main>
-        <!-- Page content -->
-    </main>
-    <footer class="footer-glass">...</footer>
-    <script src="assets/js/main.js"></script>
-</body>
-</html>
+Mobile-first approach with breakpoints:
+
+```css
+/* Mobile: < 640px (base styles) */
+/* Tablet: ≥ 640px */
+/* Desktop: ≥ 768px */
+/* Large Desktop: ≥ 1024px */
+/* XL: ≥ 1440px (max-width) */
 ```
 
-### Admin Dashboard
-- Single-page application
-- Modal-based workflows
-- GitHub API integration
-- Will add Supabase auth later
+All components are fully responsive and tested across devices.
 
 ---
 
-## 🎯 Development Guidelines
+## ♿ Accessibility
 
-### Performance Targets
-- **<50KB** per page (excluding external resources)
-- **Mobile-first** responsive design
-- **Accessible** WCAG 2.1 AA compliance
-- **Fast** optimized images, minified code
-
-### Code Style
-- **2 spaces** for indentation
-- **kebab-case** for CSS classes
-- **camelCase** for JavaScript
-- **Semantic HTML** always
-- **Comments** for complex logic
-
-### Browser Support
-- Chrome/Edge (latest 2 versions)
-- Firefox (latest 2 versions)
-- Safari (latest 2 versions)
-- iOS Safari 12+
-- Android Chrome 90+
+- Semantic HTML5 elements
+- ARIA labels on interactive elements
+- Focus states visible on all interactive elements
+- Keyboard navigation support
+- Color contrast meets WCAG 2.1 AA standards
+- Reduced motion support via `prefers-reduced-motion`
+- Alt text on all images (when implemented)
+- Form labels and error messages
 
 ---
 
-## 🤖 AI Assistant Integration
+## 📊 Analytics & Monitoring
 
-### For Claude/ChatGPT/Cursor
-This repository is optimized for AI-assisted development:
-
-1. **Clear Structure** - Logical file organization
-2. **CSS Variables** - Easy theme customization
-3. **Reusable Components** - Glassmorphic system
-4. **Documented Functions** - JSDoc-style comments
-5. **Consistent Naming** - Predictable patterns
-
-### Common AI Tasks
-```bash
-# "Add a new page about our team"
-# AI should: Copy template, update nav, add to sitemap
-
-# "Make the donate button more prominent"
-# AI should: Update .btn-primary styles in main.css
-
-# "Add a success story card"
-# AI should: Use .glass-card from glassmorphic.css
-
-# "Fix mobile menu not closing"
-# AI should: Check main.js mobile-toggle event listeners
-```
+To be implemented:
+- Google Analytics 4
+- Sentry for error tracking
+- Vercel Analytics
+- Stripe Dashboard for donation tracking
 
 ---
 
-## 📋 To-Do List
+## 👥 Team
 
-### Static Site (Current)
-- [ ] Complete `about.html` page
-- [ ] Create `apply.html` grant form
-- [ ] Build `donate.html` with Stripe placeholder
-- [ ] Add `stories.html` testimonials
-- [ ] Finish `contact.html` form
-- [ ] Add social media links
-- [ ] Create 404 page
-- [ ] Add sitemap.xml
-- [ ] SEO meta tags all pages
-
-### Migration Prep (Next Phase)
-- [ ] Supabase schema design
-- [ ] Render deployment config
-- [ ] Stripe integration setup
-- [ ] Email service (SendGrid/Resend)
-- [ ] Form submission endpoints
-- [ ] Admin authentication
-- [ ] User roles/permissions
-- [ ] Analytics integration
-
----
-
-## 🔐 Environment Variables (Future)
-
-Will need for Supabase/Render migration:
-```env
-SUPABASE_URL=
-SUPABASE_ANON_KEY=
-STRIPE_PUBLIC_KEY=
-STRIPE_SECRET_KEY=
-GITHUB_TOKEN=
-SENDGRID_API_KEY=
-```
-
----
-
-## 📞 Team
-
-- **Sam** - CEO/Founder, UI/UX Engineer
+- **Sam** - Founder & CEO
 - **Connor McNeely** - CTO
 - **Fred Williams** - CMO
 
 ---
 
+## 📞 Contact
+
+- **Website:** https://www.meauxbility.org
+- **Email:** info@meauxbility.org
+- **Location:** Lafayette, Louisiana (Acadiana Region)
+- **EIN:** 33-4214907
+
+---
+
 ## 📜 License
 
-© 2024 Meauxbility. All rights reserved.  
-501(c)(3) Nonprofit Organization - EIN: 33-4214907
+© 2024-2025 Meauxbility. All rights reserved.
+501(c)(3) Nonprofit Organization
 
 ---
 
-## 🔗 Links
+## 📝 Development Notes
 
-- **Website:** [meauxbility.org](https://meauxbility.org)
-- **Inner Animals:** [inneranimals.com](https://inneranimals.com)
-- **GitHub:** [github.com/[username]/meauxbility.org]
+### Working with This Codebase
+
+1. **Brand Tokens:** All colors/spacing defined in `styles/mbx-tokens.css`
+2. **Components:** Use CSS Modules for component-specific styles
+3. **API Routes:** Server-side only, use environment variables
+4. **Type Safety:** Run `npm run type-check` before committing
+5. **Accessibility:** Test with keyboard navigation and screen readers
+
+### Adding New Pages
+
+1. Create directory in `app/`
+2. Add `page.tsx` with metadata export
+3. Create corresponding `.module.css` file
+4. Update Header navigation if needed
+5. Add to `repo.json` routes array
+
+### Common Tasks
+
+```bash
+# Add new dependency
+npm install package-name
+
+# Update all dependencies
+npm update
+
+# Check for outdated packages
+npm outdated
+
+# Run production build locally
+npm run build && npm start
+```
 
 ---
 
-## 💡 Notes for AI Assistants
+*Last Updated: November 2024*
+*Version: 2.0.0 - Next.js App Router Rebuild*
 
-### Key Context
-- Sam is the founder with SCI experience
-- Mobile-first, glassmorphic design is the signature style
-- <50KB pages for performance
-- November 3rd launch deadline
-- Static now, Supabase/Render later
-
-### Design Philosophy
-- Accessibility is paramount
-- Performance over fancy features
-- Reusable components
-- Progressive enhancement
-- Semantic HTML
-
-### Working with Sam
-- Uses ChatGPT for ideation
-- Uses Claude (you!) for refinement
-- Uses Cursor for development
-- Prefers complete, production-ready code
-- Values clear documentation
-
----
-
-*Last Updated: October 2024*

@@ -1,0 +1,312 @@
+/* Impact (Donate) Page */
+.impactHero {
+  padding: calc(80px + var(--mbx-space-2xl)) var(--mbx-space-md) var(--mbx-space-xl);
+  text-align: center;
+  background:
+    radial-gradient(1200px 700px at 50% 0%, rgba(255, 107, 0, 0.15) 0%, transparent 60%),
+    var(--mbx-bg);
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin-bottom: var(--mbx-space-md);
+  color: var(--mbx-ink);
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--mbx-text-2);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.donateSection {
+  padding: var(--mbx-space-2xl) var(--mbx-space-md);
+}
+
+.donateGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--mbx-space-2xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.donateInfo h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: var(--mbx-space-md);
+  color: var(--mbx-ink);
+}
+
+.donateInfo > p {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--mbx-text-2);
+  margin-bottom: var(--mbx-space-xl);
+}
+
+.impactList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mbx-space-md);
+  margin-bottom: var(--mbx-space-xl);
+}
+
+.impactItem {
+  display: flex;
+  gap: var(--mbx-space-md);
+  align-items: flex-start;
+  padding: var(--mbx-space-md);
+  background: var(--mbx-surface-alt);
+  border-radius: var(--mbx-radius-md);
+}
+
+.impactIcon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.impactItem h4 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+  color: var(--mbx-orange);
+}
+
+.impactItem p {
+  color: var(--mbx-text-2);
+  line-height: 1.5;
+}
+
+.taxInfo {
+  background: rgba(51, 153, 153, 0.1);
+  border-left: 4px solid var(--mbx-teal);
+  padding: var(--mbx-space-md);
+  border-radius: var(--mbx-radius-md);
+}
+
+.taxInfo p {
+  color: var(--mbx-text-2);
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .donateGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.donateForm {
+  background: var(--mbx-surface);
+  border: 1px solid var(--mbx-border);
+  border-radius: var(--mbx-radius-lg);
+  padding: var(--mbx-space-xl);
+  box-shadow: var(--mbx-shadow-md);
+}
+
+.donateForm h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--mbx-space-md);
+  color: var(--mbx-ink);
+}
+
+.amountGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--mbx-space-sm);
+  margin-bottom: var(--mbx-space-lg);
+}
+
+.amountBtn {
+  padding: var(--mbx-space-md);
+  background: var(--mbx-surface-alt);
+  border: 2px solid var(--mbx-border);
+  border-radius: var(--mbx-radius-md);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--mbx-text);
+  cursor: pointer;
+  transition: all 0.2s var(--mbx-ease);
+}
+
+.amountBtn:hover {
+  border-color: var(--mbx-teal);
+  background: rgba(51, 153, 153, 0.05);
+}
+
+.amountBtnActive {
+  background: var(--mbx-teal);
+  color: var(--mbx-white);
+  border-color: var(--mbx-teal);
+}
+
+.customAmount label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--mbx-ink);
+}
+
+.inputGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputPrefix {
+  position: absolute;
+  left: var(--mbx-space-sm);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--mbx-text);
+}
+
+.customInput {
+  width: 100%;
+  padding: var(--mbx-space-sm) var(--mbx-space-sm) var(--mbx-space-sm) 2rem;
+  border: 2px solid var(--mbx-border);
+  border-radius: var(--mbx-radius-md);
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--mbx-text);
+  background: var(--mbx-surface);
+  transition: all 0.2s var(--mbx-ease);
+}
+
+.customInput:focus {
+  outline: none;
+  border-color: var(--mbx-teal);
+  box-shadow: 0 0 0 3px rgba(51, 153, 153, 0.1);
+}
+
+.secureNote {
+  text-align: center;
+  margin-top: var(--mbx-space-sm);
+  font-size: 0.875rem;
+  color: var(--mbx-muted);
+}
+
+.waysToGive {
+  padding: var(--mbx-space-2xl) var(--mbx-space-md);
+  background: var(--mbx-surface-alt);
+}
+
+.waysToGive h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: var(--mbx-space-xl);
+  text-align: center;
+  color: var(--mbx-ink);
+}
+
+.waysGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--mbx-space-md);
+  max-width: 1200px;
+  margin: 0 auto var(--mbx-space-xl);
+}
+
+.wayCard {
+  background: var(--mbx-surface);
+  border: 1px solid var(--mbx-border);
+  border-radius: var(--mbx-radius-md);
+  padding: var(--mbx-space-lg);
+  text-align: center;
+  transition: transform 0.3s var(--mbx-ease), box-shadow 0.3s var(--mbx-ease);
+}
+
+.wayCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--mbx-shadow-md);
+}
+
+.wayIcon {
+  font-size: 2.5rem;
+  margin-bottom: var(--mbx-space-sm);
+}
+
+.wayCard h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--mbx-ink);
+}
+
+.wayCard p {
+  color: var(--mbx-text-2);
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .waysGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .waysGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.contactCta {
+  text-align: center;
+}
+
+.contactCta p {
+  font-size: 1.125rem;
+  margin-bottom: var(--mbx-space-md);
+  color: var(--mbx-text-2);
+}
+
+.impactStats {
+  padding: var(--mbx-space-2xl) var(--mbx-space-md);
+  text-align: center;
+}
+
+.impactStats h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: var(--mbx-space-xl);
+  color: var(--mbx-ink);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--mbx-space-lg);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.statItem {
+  background: var(--mbx-surface);
+  border: 1px solid var(--mbx-border);
+  border-radius: var(--mbx-radius-lg);
+  padding: var(--mbx-space-xl);
+  box-shadow: var(--mbx-shadow-sm);
+}
+
+.statNumber {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  color: var(--mbx-teal);
+  margin-bottom: var(--mbx-space-xs);
+}
+
+.statLabel {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--mbx-text-2);
+}
+
+@media (min-width: 768px) {
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

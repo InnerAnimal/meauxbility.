@@ -1,35 +1,49 @@
 {
   "name": "meauxbility-org",
-  "version": "1.0.0",
-  "description": "Meauxbility - Transform Your Pain into Purpose",
+  "version": "2.0.0",
+  "description": "Meauxbility - Transform Your Pain into Purpose | Next.js 14 App Router",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
   },
-  "keywords": ["meauxbility", "nonprofit", "pain", "purpose", "healing"],
+  "keywords": [
+    "meauxbility",
+    "nonprofit",
+    "mobility",
+    "accessibility",
+    "spinal-cord-injury",
+    "Acadiana",
+    "Louisiana"
+  ],
   "author": "Meauxbility Team",
   "license": "MIT",
   "dependencies": {
-    "next": "^14.2.18",
+    "@ai-sdk/openai": "^2.0.64",
+    "@stripe/react-stripe-js": "^5.3.0",
+    "@stripe/stripe-js": "^8.3.0",
+    "@supabase/supabase-js": "^2.80.0",
+    "ai": "^3.4.33",
+    "next": "^14.2.33",
+    "openai": "^4.104.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "@supabase/supabase-js": "^2.38.4",
-    "@stripe/stripe-js": "^4.8.0",
-    "stripe": "^14.9.0",
-    "resend": "^4.0.1"
+    "resend": "^3.5.0",
+    "stripe": "^14.25.0"
   },
   "devDependencies": {
-    "typescript": "^5.6.3",
-    "@types/node": "^22.7.9",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "eslint": "^8.57.0",
-    "eslint-config-next": "^14.2.18"
+    "@types/node": "^20.19.24",
+    "@types/react": "^18.3.26",
+    "@types/react-dom": "^18.3.7",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.33",
+    "typescript": "^5.9.3"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }

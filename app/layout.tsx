@@ -1,60 +1,39 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import Footer from '@/components/Footer';
-import './globals.css';
-
-const inter = Inter({ subsets: ['latin'] });
+import type { Metadata } from 'next'
+import '../styles/globals.css'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import ThemeProvider from '@/components/ThemeProvider'
+import ChatWidget from '@/components/ChatWidget'
+import { AuthProvider } from '@/contexts/AuthContext'
 
 export const metadata: Metadata = {
   title: 'Meauxbility | Transform Your Pain into Purpose',
-  description:
-    'More Options. More Access. More Life. Meauxbility is a 501(c)(3) nonprofit providing mobility grants and accessibility services to spinal cord injury survivors across Louisiana.',
-  keywords: [
-    'meauxbility',
-    'nonprofit',
-    'accessibility',
-    'mobility grants',
-    'spinal cord injury',
-    'adaptive athletes',
-    'Louisiana',
-  ],
+  description: 'Providing mobility grants and accessibility services to spinal cord injury survivors across Louisiana\'s Acadiana region.',
+  keywords: ['meauxbility', 'nonprofit', 'mobility', 'accessibility', 'spinal cord injury', 'Acadiana', 'Louisiana'],
   authors: [{ name: 'Meauxbility Team' }],
   openGraph: {
     title: 'Meauxbility | Transform Your Pain into Purpose',
-    description:
-      'More Options. More Access. More Life. Join us as we transform obstacles into pathways for adaptive athletes and spinal cord injury survivors.',
-    url: 'https://meauxbility.org',
+    description: 'Providing mobility grants and accessibility services to spinal cord injury survivors across Louisiana\'s Acadiana region.',
+    url: 'https://www.meauxbility.org',
     siteName: 'Meauxbility',
-    images: [
-      {
-        url: 'https://cdn.shopify.com/s/files/1/0685/1654/4672/files/meauxbility_logo_540.webp?v=1760648661',
-        width: 540,
-        height: 540,
-        alt: 'Meauxbility Logo',
-      },
-    ],
     locale: 'en_US',
     type: 'website',
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Meauxbility | Transform Your Pain into Purpose',
-    description:
-      'More Options. More Access. More Life. Join us as we transform obstacles into pathways for adaptive athletes and spinal cord injury survivors.',
-    images: [
-      'https://cdn.shopify.com/s/files/1/0685/1654/4672/files/meauxbility_logo_540.webp?v=1760648661',
-    ],
+  robots: {
+    index: true,
+    follow: true,
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: '/favicon/favicon.ico',
+    apple: '/favicon/apple-touch-icon.png',
   },
-};
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en" data-theme="light">
       <head>
@@ -67,10 +46,16 @@ export default function RootLayout({
           type="image/webp"
         />
       </head>
-      <body className={inter.className}>
-        <main style={{ flex: 1, minHeight: '70vh' }}>{children}</main>
-        <Footer />
+      <body data-theme="light">
+        <AuthProvider>
+          <ThemeProvider>
+            <Header />
+            <main id="main">{children}</main>
+            <Footer />
+            <ChatWidget />
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
-  );
+  )
 }
