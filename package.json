@@ -1,32 +1,49 @@
 {
   "name": "meauxbility-org",
-  "version": "1.0.0",
-  "description": "Meauxbility - Transform Your Pain into Purpose",
-  "main": "server.js",
+  "version": "2.0.0",
+  "description": "Meauxbility - Transform Your Pain into Purpose | Next.js 14 App Router",
+  "private": true,
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
-    "build": "echo 'No build step required'",
-    "test": "echo 'No tests specified'"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
   },
-  "keywords": ["meauxbility", "nonprofit", "pain", "purpose", "healing"],
+  "keywords": [
+    "meauxbility",
+    "nonprofit",
+    "mobility",
+    "accessibility",
+    "spinal-cord-injury",
+    "Acadiana",
+    "Louisiana"
+  ],
   "author": "Meauxbility Team",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "helmet": "^7.1.0",
-    "compression": "^1.7.4",
-    "express-rate-limit": "^7.1.5",
-    "dotenv": "^16.3.1",
-    "@supabase/supabase-js": "^2.38.4",
-    "stripe": "^14.9.0",
-    "nodemailer": "^6.9.7"
+    "@ai-sdk/openai": "^2.0.64",
+    "@stripe/react-stripe-js": "^5.3.0",
+    "@stripe/stripe-js": "^8.3.0",
+    "@supabase/supabase-js": "^2.80.0",
+    "ai": "^3.4.33",
+    "next": "^14.2.33",
+    "openai": "^4.104.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "resend": "^3.5.0",
+    "stripe": "^14.25.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "@types/node": "^20.19.24",
+    "@types/react": "^18.3.26",
+    "@types/react-dom": "^18.3.7",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.33",
+    "typescript": "^5.9.3"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }
