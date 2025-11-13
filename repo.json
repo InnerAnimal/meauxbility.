@@ -1,0 +1,42 @@
+{
+  "repository": {
+    "full_name": "InnerAnimal/meauxbility.org",
+    "owner": "InnerAnimal",
+    "name": "meauxbility.org",
+    "id": 1084436604,
+    "description": "Meauxbility.org — Next.js App Router rebuild with branded Header/Footer, Stripe donations, Supabase storage, Resend emails, and clean routes.",
+    "primary_language": "TypeScript"
+  },
+  "site": {
+    "domain": "https://www.meauxbility.org",
+    "vercel_project_id": "prj_tLe5xpmnA0hbDNRytqCbWq8R2Gul",
+    "routes": [
+      "/",
+      "/about",
+      "/programs",
+      "/community",
+      "/resources",
+      "/connect",
+      "/impact"
+    ],
+    "legacy_redirects": {
+      "/about.html": "/about",
+      "/apply.html": "/programs",
+      "/donate.html": "/impact",
+      "/contact.html": "/connect",
+      "/index.html": "/",
+      "/stories.html": "/community"
+    },
+    "theme": {
+      "home": "light",
+      "dark_pages": ["/about", "/community", "/resources"]
+    },
+    "brand_tokens": "styles/mbx-tokens.css"
+  },
+  "integrations": {
+    "stripe": true,
+    "supabase": true,
+    "resend": true
+  },
+  "last_updated_utc": "2025-11-07T00:00:00Z"
+}

@@ -1,56 +1,76 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { sendEmail, emailTemplates } from '@/lib/integrations/resend'
-import { z } from 'zod'
-
-const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
-})
+import { Resend } from 'resend'
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    // Initialize Resend client at runtime
+    const resend = new Resend(process.env.RESEND_API_KEY || '')
 
-    // Validate input
-    const validatedData = contactSchema.parse(body)
+    const { name, email, phone, subject, message } = await request.json()
 
-    // Send notification email to admin
-    const template = emailTemplates.contactForm(validatedData)
-    await sendEmail({
-      to: process.env.RESEND_TO_EMAIL!,
-      subject: template.subject,
-      html: template.html,
-      text: template.text,
-      replyTo: validatedData.email,
-    })
-
-    // Send confirmation email to user
-    await sendEmail({
-      to: validatedData.email,
-      subject: 'We received your message - Meauxbility',
-      html: `
-        <p>Dear ${validatedData.name},</p>
-        <p>Thank you for contacting Meauxbility. We have received your message and will respond within 24-48 hours.</p>
-        <p>Best regards,<br>The Meauxbility Team</p>
-      `,
-    })
-
-    return NextResponse.json(
-      { success: true, message: 'Message sent successfully' },
-      { status: 200 }
-    )
-  } catch (error) {
-    if (error instanceof z.ZodError) {
+    // Validate required fields
+    if (!name || !email || !subject || !message) {
       return NextResponse.json(
-        { success: false, errors: error.errors },
+        { error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
+        { status: 400 }
+      )
+    }
+
+    // Send notification to admin
+    const adminEmail = await resend.emails.send({
+      from: 'Meauxbility Contact Form <noreply@meauxbility.org>',
+      to: process.env.ADMIN_EMAIL || 'info@meauxbility.org',
+      subject: `Contact Form: ${subject}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+        <p><strong>Subject:</strong> ${subject}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message.replace(/\n/g, '<br>')}</p>
+      `,
+    })
+
+    // Send confirmation to user
+    const confirmationEmail = await resend.emails.send({
+      from: 'Meauxbility <noreply@meauxbility.org>',
+      to: email,
+      subject: 'Thank you for contacting Meauxbility',
+      html: `
+        <h2>Thank you for reaching out!</h2>
+        <p>Hi ${name},</p>
+        <p>We've received your message and will respond within 1-2 business days.</p>
+        <h3>Your Message:</h3>
+        <p><strong>Subject:</strong> ${subject}</p>
+        <p>${message.replace(/\n/g, '<br>')}</p>
+        <hr>
+        <p>
+          <strong>Meauxbility</strong><br>
+          501(c)(3) Nonprofit<br>
+          EIN: 33-4214907<br>
+          Lafayette, Louisiana
+        </p>
+      `,
+    })
+
+    return NextResponse.json({
+      success: true,
+      message: 'Message sent successfully',
+    })
+  } catch (error: any) {
     console.error('Contact form error:', error)
     return NextResponse.json(
-      { success: false, message: 'Failed to send message' },
+      { error: error.message || 'Failed to send message' },
       { status: 500 }
     )
   }

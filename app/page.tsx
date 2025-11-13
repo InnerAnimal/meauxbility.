@@ -1,31 +1,25 @@
 import Link from 'next/link'
-import { MessageSquare, Code, Users, CreditCard, FolderOpen } from 'lucide-react'
+import styles from './page.module.css'
 
-export default function HomePage() {
+export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+      <section className={styles.heroGlass}>
+        <div className="container">
+          <h1 className={styles.heroTitle}>
             Empowering Mobility.
             <br />
             Restoring Independence.
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+          <p className={styles.heroSubtitle}>
             Supporting spinal cord injury survivors across Acadiana with grants for adaptive equipment and accessibility services.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/apply"
-              className="btn-glass-primary text-lg"
-            >
+          <div className={styles.heroCta}>
+            <Link href="/programs" className="btn btn-primary">
               Apply for Grant
             </Link>
-            <Link
-              href="/donate"
-              className="btn-glass-secondary text-lg"
-            >
+            <Link href="/impact" className="btn btn-secondary">
               Support Our Mission
             </Link>
           </div>
@@ -33,32 +27,58 @@ export default function HomePage() {
       </section>
 
       {/* TRUTEC Stack Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-transparent via-purple-900/20 to-transparent">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Our Meauxbility TRUTEC Stack
-            </h2>
-            <p className="text-xl text-gray-300">
-              Our Application, simplified.
-            </p>
-          </div>
+      <section className={styles.stackSection}>
+        <div className={styles.stackWrap}>
+          <header className={styles.stackHead}>
+            <h2 className={styles.stackH1}>Our Meauxbility TRUTEC Stack</h2>
+            <p className={styles.stackH2}>Our Application, simplified.</p>
+          </header>
 
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            {/* Left Side - Stack Components */}
-            <div className="space-y-4">
-              <StackCard icon={<MessageSquare />} label="Messages" />
-              <StackCard icon={<Code />} label="API" />
-              <StackCard icon={<Users />} label="Customers" />
-              <StackCard icon={<CreditCard />} label="Brands" />
-              <StackCard icon={<FolderOpen />} label="Assets" />
+          <div className={styles.stackGrid}>
+            <div className={styles.stackLeft}>
+              <div className={styles.stackCard}>
+                <svg className={styles.stackIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 15a4 4 0 0 1-4 4H8l-5 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+                  <path d="M8 9h8M8 13h6"/>
+                </svg>
+                <span>Messages</span>
+              </div>
+
+              <div className={styles.stackCard}>
+                <svg className={styles.stackIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
+                </svg>
+                <span>API</span>
+              </div>
+
+              <div className={styles.stackCard}>
+                <svg className={styles.stackIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M20 21a8 8 0 1 0-16 0"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span>Customers</span>
+              </div>
+
+              <div className={styles.stackCard}>
+                <svg className={styles.stackIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="2" y="5" width="20" height="14" rx="3"/>
+                  <path d="M2 10h20"/>
+                </svg>
+                <span>Brands</span>
+              </div>
+
+              <div className={styles.stackCard}>
+                <svg className={styles.stackIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                </svg>
+                <span>Assets</span>
+              </div>
             </div>
 
-            {/* Right Side - App Logo */}
-            <div className="flex items-center justify-center">
-              <div className="glass-card p-12 text-center">
-                <div className="text-3xl font-black tracking-wider">
-                  MEA<span className="text-blue-500">UX</span>BILITY
+            <div className={styles.stackRight}>
+              <div className={styles.stackApp}>
+                <div className={styles.stackLogo}>
+                  MEA<span className={styles.logoX}>UX</span>BILITY
                 </div>
               </div>
             </div>
@@ -67,89 +87,45 @@ export default function HomePage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <StatCard number="50+" label="Grants Awarded" />
-            <StatCard number="$100K+" label="Equipment Funded" />
-            <StatCard number="15+" label="Parishes Served" />
+      <section className={styles.statsGlass}>
+        <div className="container">
+          <div className={styles.statsGrid}>
+            <div className={styles.statCard}>
+              <h3>50+</h3>
+              <p>Grants Awarded</p>
+            </div>
+            <div className={styles.statCard}>
+              <h3>$250K+</h3>
+              <p>Funds Distributed</p>
+            </div>
+            <div className={styles.statCard}>
+              <h3>100%</h3>
+              <p>Acadiana Coverage</p>
+            </div>
+            <div className={styles.statCard}>
+              <h3>24/7</h3>
+              <p>Support Available</p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Mission Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Our Mission
-          </h2>
-          <p className="text-lg text-gray-300 leading-relaxed">
-            Meauxbility is a 501(c)(3) nonprofit organization dedicated to empowering spinal cord injury survivors across Louisiana's Acadiana region. We provide mobility grants and accessibility services to help individuals regain their independence and improve their quality of life.
+      <section className={styles.missionSection}>
+        <div className="container">
+          <h2>Our Mission</h2>
+          <p className={styles.missionText}>
+            Meauxbility is dedicated to empowering spinal cord injury survivors across Louisiana's Acadiana region.
+            We provide grants for adaptive equipment, home modifications, and accessibility services that restore
+            independence and improve quality of life.
           </p>
-          <div className="mt-8">
-            <Link
-              href="/about"
-              className="btn-glass-primary"
-            >
+          <div className={styles.missionCta}>
+            <Link href="/about" className="btn btn-outline">
               Learn More About Us
             </Link>
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-purple-900/20 to-transparent">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Ready to Get Started?
-          </h2>
-          <p className="text-lg text-gray-300 mb-8">
-            Whether you need assistance or want to support our cause, we're here to help.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/apply"
-              className="btn-glass-primary text-lg"
-            >
-              Apply Now
-            </Link>
-            <Link
-              href="/donate"
-              className="btn-glass-secondary text-lg"
-            >
-              Make a Donation
-            </Link>
-            <Link
-              href="/contact"
-              className="btn-glass-secondary text-lg"
-            >
-              Contact Us
-            </Link>
-          </div>
-        </div>
-      </section>
     </>
-  )
-}
-
-// Stack Card Component
-function StackCard({ icon, label }: { icon: React.ReactNode; label: string }) {
-  return (
-    <div className="glass-card flex items-center gap-4 hover:bg-white/15 transition-all">
-      <div className="text-gray-900 bg-white rounded-lg p-2">
-        {icon}
-      </div>
-      <span className="text-lg font-semibold text-white">{label}</span>
-    </div>
-  )
-}
-
-// Stat Card Component
-function StatCard({ number, label }: { number: string; label: string }) {
-  return (
-    <div className="glass-card text-center hover:bg-white/15 transition-all">
-      <h3 className="text-4xl md:text-5xl font-bold text-white mb-2">{number}</h3>
-      <p className="text-gray-300 font-medium">{label}</p>
-    </div>
   )
 }

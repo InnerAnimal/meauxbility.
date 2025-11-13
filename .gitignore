@@ -74,7 +74,4 @@ next-env.d.ts
 # Secrets and API keys
 secrets.json
 config.local.js
-
-# Backup files
-*.backup
-*.bak
+.next
