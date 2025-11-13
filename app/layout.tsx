@@ -3,7 +3,8 @@ import '../styles/globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ThemeProvider from '@/components/ThemeProvider'
-import ChatBot from '@/components/ChatBot'
+import ChatWidget from '@/components/ChatWidget'
+import { AuthProvider } from '@/contexts/AuthContext'
 
 export const metadata: Metadata = {
   title: 'Meauxbility | Transform Your Pain into Purpose',
@@ -46,12 +47,14 @@ export default function RootLayout({
         />
       </head>
       <body data-theme="light">
-        <ThemeProvider>
-          <Header />
-          <main id="main">{children}</main>
-          <Footer />
-          <ChatBot />
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <Header />
+            <main id="main">{children}</main>
+            <Footer />
+            <ChatWidget />
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   )
