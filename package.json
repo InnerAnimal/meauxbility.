@@ -28,7 +28,7 @@
     "@stripe/stripe-js": "^8.3.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.80.0",
-    "ai": "^3.4.33",
+    "ai": "^5.0.93",
     "clsx": "^2.1.1",
     "next": "^14.2.33",
     "openai": "^4.104.0",
