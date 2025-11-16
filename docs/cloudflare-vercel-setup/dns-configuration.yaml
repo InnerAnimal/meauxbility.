@@ -1,0 +1,236 @@
+---
+domain: meauxbility.org
+description: DNS Configuration for Cloudflare + Vercel Integration
+last_updated: '2025-11-16'
+
+nameservers:
+  description: Cloudflare nameservers (will be assigned when zone is created)
+  note: Update these at your domain registrar
+  example_nameservers:
+    - ava.ns.cloudflare.com
+    - ben.ns.cloudflare.com
+  instructions: Replace example nameservers with actual ones from Cloudflare dashboard
+
+dns_records:
+  - type: A
+    name: '@'
+    value: 76.76.21.21
+    ttl: 1
+    proxied: true
+    description: Apex domain pointing to Vercel
+    priority: null
+    notes:
+      - 76.76.21.21 is Vercel's anycast IP
+      - Proxied through Cloudflare for CDN and security
+      - TTL of 1 means 'Automatic' in Cloudflare (proxied records)
+
+  - type: CNAME
+    name: www
+    value: cname.vercel-dns.com
+    ttl: 1
+    proxied: true
+    description: WWW subdomain pointing to Vercel
+    priority: null
+    notes:
+      - cname.vercel-dns.com is Vercel's CNAME target
+      - Proxied through Cloudflare for CDN and security
+      - Automatically redirects to apex domain via Cloudflare Page Rule
+
+optional_records:
+  - type: TXT
+    name: '@'
+    value: v=spf1 include:_spf.mx.cloudflare.net ~all
+    ttl: 3600
+    proxied: false
+    description: SPF record for email (if using Cloudflare Email Routing)
+    notes:
+      - Only needed if you plan to send email from this domain
+      - Configure Email Routing in Cloudflare dashboard first
+
+  - type: TXT
+    name: _dmarc
+    value: 'v=DMARC1; p=quarantine; rua=mailto:dmarc@meauxbility.org'
+    ttl: 3600
+    proxied: false
+    description: DMARC policy for email security
+    notes:
+      - Only needed if you send email from this domain
+      - Adjust email address to your actual reporting address
+
+  - type: TXT
+    name: '@'
+    value: google-site-verification=YOUR_VERIFICATION_CODE
+    ttl: 3600
+    proxied: false
+    description: Google Search Console verification
+    notes:
+      - Get verification code from Google Search Console
+      - Required for Google Analytics and SEO tools
+
+  - type: CNAME
+    name: staging
+    value: cname.vercel-dns.com
+    ttl: 1
+    proxied: true
+    description: Staging subdomain for testing
+    notes:
+      - Points to Vercel for staging deployments
+      - Configure in Vercel project settings
+
+ssl_configuration:
+  mode: Full (Strict)
+  description: SSL/TLS encryption mode
+  certificate_authority: Cloudflare
+  certificate_type: Universal SSL
+  auto_renewal: true
+  notes:
+    - Full (Strict) requires valid SSL certificate on origin (Vercel)
+    - Vercel automatically provisions SSL certificates
+    - Cloudflare provides additional SSL layer for added security
+
+cloudflare_settings:
+  ssl_tls:
+    mode: strict
+    always_use_https: true
+    automatic_https_rewrites: true
+    min_tls_version: '1.2'
+    tls_1_3: true
+    opportunistic_encryption: true
+    tls_client_auth: false
+
+  security:
+    security_level: medium
+    bot_fight_mode: true
+    browser_integrity_check: true
+    challenge_passage: 3600
+    email_obfuscation: true
+    hotlink_protection: false
+    ip_geolocation: true
+    privacy_pass: true
+    server_side_exclude: true
+
+  performance:
+    auto_minify:
+      html: true
+      css: true
+      js: true
+    brotli: true
+    early_hints: true
+    http2: true
+    http3: true
+    zero_rtt: true
+    websockets: true
+    rocket_loader: false
+    mirage: false
+    polish: 'off'
+    browser_cache_ttl: 0
+
+  caching:
+    caching_level: standard
+    browser_cache_ttl: 0
+    always_online: true
+    development_mode: false
+
+  network:
+    ipv6: true
+    pseudo_ipv4: 'off'
+    ip_geolocation: true
+    websockets: true
+    grpc: true
+
+page_rules:
+  - priority: 1
+    url_pattern: www.meauxbility.org/*
+    actions:
+      forwarding_url:
+        url: https://meauxbility.org/$1
+        status_code: 301
+    description: Redirect www to apex domain with 301 permanent redirect
+    status: active
+
+  - priority: 2
+    url_pattern: meauxbility.org/api/*
+    actions:
+      cache_level: bypass
+    description: Bypass cache for API routes to ensure fresh data
+    status: active
+
+  - priority: 3
+    url_pattern: meauxbility.org/_next/static/*
+    actions:
+      cache_level: cache_everything
+      edge_cache_ttl: 2592000
+    description: Aggressively cache Next.js static assets (30 days)
+    status: active
+
+verification:
+  dns_propagation:
+    command: dig +short meauxbility.org A
+    expected_result: 76.76.21.21
+    description: Verify A record propagation
+
+  www_cname:
+    command: dig +short www.meauxbility.org CNAME
+    expected_result: cname.vercel-dns.com.
+    description: Verify CNAME record propagation
+
+  ssl_certificate:
+    command: curl -I https://meauxbility.org
+    expected_result: HTTP/2 200
+    description: Verify SSL certificate and HTTPS accessibility
+
+  nameservers:
+    command: dig +short meauxbility.org NS
+    expected_result: Cloudflare nameservers
+    description: Verify nameserver update at registrar
+
+troubleshooting:
+  dns_not_propagating:
+    issue: DNS changes not visible after 24 hours
+    solutions:
+      - Verify nameservers are correctly set at domain registrar
+      - Check Cloudflare dashboard shows 'Active' status
+      - 'Clear local DNS cache: sudo systemd-resolve --flush-caches'
+      - 'Use different DNS server for testing: dig @8.8.8.8 meauxbility.org'
+
+  ssl_error:
+    issue: SSL certificate errors or warnings
+    solutions:
+      - Ensure SSL mode is set to 'Full (Strict)' in Cloudflare
+      - Verify Vercel has provisioned SSL certificate
+      - Wait 24 hours after DNS changes for certificate propagation
+      - Check SSL status in both Cloudflare and Vercel dashboards
+
+  redirect_loop:
+    issue: Too many redirects error
+    solutions:
+      - Ensure SSL mode is 'Full (Strict)', not 'Flexible'
+      - Disable 'Always Use HTTPS' temporarily to test
+      - Check Vercel deployment settings for HTTPS enforcement
+      - Clear browser cache and cookies
+
+provider_dashboards:
+  cloudflare:
+    dashboard: https://dash.cloudflare.com/
+    dns_management: https://dash.cloudflare.com/[account_id]/meauxbility.org/dns
+    ssl_settings: https://dash.cloudflare.com/[account_id]/meauxbility.org/ssl-tls
+    analytics: https://dash.cloudflare.com/[account_id]/meauxbility.org/analytics
+
+  vercel:
+    dashboard: https://vercel.com/dashboard
+    project_settings: https://vercel.com/[team]/meauxbility/settings
+    domains: https://vercel.com/[team]/meauxbility/settings/domains
+    deployments: https://vercel.com/[team]/meauxbility/deployments
+
+external_tools:
+  dns_propagation_check:
+    - https://www.whatsmydns.net/#A/meauxbility.org
+    - https://dnschecker.org/#A/meauxbility.org
+
+  ssl_test:
+    - https://www.ssllabs.com/ssltest/analyze.html?d=meauxbility.org
+    - https://securityheaders.com/?q=https://meauxbility.org
+
+  performance_test:
+    - https://pagespeed.web.dev/?url=https://meauxbility.org
+    - https://www.webpagetest.org/

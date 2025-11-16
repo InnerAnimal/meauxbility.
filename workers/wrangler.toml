@@ -1,0 +1,81 @@
+# Wrangler Configuration for meauxbility.org Security Headers Worker
+# Documentation: https://developers.cloudflare.com/workers/wrangler/configuration/
+
+name = "meauxbility-security-headers"
+main = "security-headers.js"
+compatibility_date = "2024-01-01"
+
+# Account details (replace with your actual account ID)
+# Find your account ID at: https://dash.cloudflare.com/ -> Select account -> Copy Account ID
+# account_id = "YOUR_ACCOUNT_ID"
+
+# Environment: Production
+[env.production]
+name = "meauxbility-security-headers-prod"
+
+# Routes for production environment
+# These routes will activate the worker for all requests to meauxbility.org
+routes = [
+  { pattern = "meauxbility.org/*", zone_name = "meauxbility.org" },
+  { pattern = "www.meauxbility.org/*", zone_name = "meauxbility.org" }
+]
+
+# Environment: Staging (optional - for testing)
+[env.staging]
+name = "meauxbility-security-headers-staging"
+
+# Use a subdomain for staging tests
+# routes = [
+#   { pattern = "staging.meauxbility.org/*", zone_name = "meauxbility.org" }
+# ]
+
+# Build configuration
+[build]
+command = ""  # No build step needed for this worker
+
+# Worker limits and settings
+[limits]
+cpu_ms = 50  # Maximum CPU time per request (milliseconds)
+
+# Observability (requires Workers Paid plan)
+# [observability]
+# enabled = true
+
+# Environment variables (if needed)
+# [vars]
+# ENVIRONMENT = "production"
+# DEBUG = "false"
+
+# Secrets (managed separately via wrangler secret put)
+# Use: wrangler secret put SECRET_NAME
+# [secrets]
+# Examples:
+# - API_KEY
+# - DATABASE_URL
+
+# KV Namespaces (if you need key-value storage in the future)
+# [[kv_namespaces]]
+# binding = "MY_KV"
+# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# Durable Objects (if you need stateful workers in the future)
+# [[durable_objects.bindings]]
+# name = "MY_DURABLE_OBJECT"
+# class_name = "MyDurableObject"
+# script_name = "my-durable-object-worker"
+
+# R2 Buckets (if you want to serve assets from Cloudflare R2)
+# [[r2_buckets]]
+# binding = "MY_BUCKET"
+# bucket_name = "meauxbility-assets"
+
+# Analytics Engine (for custom analytics)
+# [[analytics_engine_datasets]]
+# binding = "ANALYTICS"
+
+# Node.js compatibility (if needed)
+# node_compat = false
+
+# Compatibility flags
+# [compatibility_flags]
+# formdata_parser_supports_files = true
